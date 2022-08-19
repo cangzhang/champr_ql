@@ -114,3 +114,7 @@
     flex-direction: column;
   }
 }
+
+.list {
+  gap: 6px;
+}
