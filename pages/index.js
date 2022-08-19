@@ -1,7 +1,9 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 import { useEffect, useRef, useState } from "react";
+import cn from 'classnames';
+
+import s from '../styles/Home.module.css'
 
 export default function Home() {
   const [latestVer, setLatestVer] = useState(``);
@@ -34,42 +36,54 @@ export default function Home() {
   }, [filter, items])
 
   return (
-    <div className={styles.container}>
+    <>
       <Head>
         <title>ChampR</title>
         <meta name="description" content="ChampR - Yet Another League of Legends Helper"/>
         <link rel="icon" href="/favicon.ico"/>
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome!
-        </h1>
+      <main className={cn(s.main, `container mx-auto p-4 flex flex-col`)}>
+        <h1 className={`text-6xl font-bold text-blue-600`}>Welcome!</h1>
 
-        <h3>Latest version is {latestVer}</h3>
+        <div className={`mt-4 mx-1`}>
+          <p className={`text-xl text-slate-500`}>
+            Latest version is
+            <span className={`text-gray-700 mx-2 underline decoration-4 decoration-pink-500`}>{latestVer}</span>
+          </p>
 
-        <form>
-          <label htmlFor="search">Search Items</label>
-          <input name="search" type="text" value={filter} onChange={ev => setFilter(ev.target.value)}/>
-        </form>
+          <div>
+            <label htmlFor="search">Search Items</label>
+            <input
+              autoComplete={`off`}
+              className={` mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
+              name="search"
+              type="text"
+              value={filter}
+              onChange={ev => setFilter(ev.target.value)}
+            />
+          </div>
+        </div>
 
-        <div className={styles.list}>
+        <div className={cn(s.list, `flex flex-wrap basis-1 my-4`)}>
           {items.map(i =>
             <Image
               key={i.id}
+              data-itemid={i.id}
               title={i.name}
-              src={`https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${i.id}.png`}
               width={48}
               height={48}
-              alt={i.name}/>
+              alt={i.name}
+              src={`https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${i.id}.png`}
+            />
           )}
         </div>
 
       </main>
 
-      <footer className={styles.footer}>
+      <footer className={s.footer}>
         Made with 💙 by alcheung
       </footer>
-    </div>
+    </>
   )
 }
