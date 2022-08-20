@@ -8,7 +8,7 @@ import s from '../styles/Home.module.css'
 export async function getServerSideProps(context) {
   let host = context.req.headers[`referer`];
   if (process.env.NODE_ENV === `production`) {
-    host = `https://ql-champr.vercel.app/`
+    host = process.env.HOST;
   }
 
   const { latest } = await fetch(`${host}api/data-dragon/versions`).then(r => r.json());
