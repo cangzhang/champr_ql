@@ -6,7 +6,11 @@ import cn from 'classnames';
 import s from '../styles/Home.module.css'
 
 export async function getServerSideProps(context) {
-  const host = context.req.headers[`referer`];
+  let host = context.req.headers[`referer`];
+  if (process.env.NODE_ENV === `production`) {
+    host = `https://ql-champr.vercel.app/`
+  }
+  
   const { latest } = await fetch(`${host}api/data-dragon/versions`).then(r => r.json());
   const resp = await fetch(`${host}api/data-dragon/${latest}/items`).then(r => r.json());
 
