@@ -64,7 +64,7 @@ function Home({ version, itemList = [] }) {
             className={` mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
             name="search"
             type="search"
-            placeholder={`Search...`}
+            placeholder={`Search items...`}
             value={filter}
             onChange={ev => setFilter(ev.target.value)}
           />
