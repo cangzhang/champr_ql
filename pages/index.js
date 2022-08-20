@@ -5,25 +5,28 @@ import cn from 'classnames';
 
 import s from '../styles/Home.module.css'
 
-export default function Home() {
-  const [latestVer, setLatestVer] = useState(``);
-  const [items, setItems] = useState([]);
+export async function getServerSideProps(context) {
+  const host = context.req.headers[`referer`];
+  const { latest } = await fetch(`${host}api/data-dragon/versions`).then(r => r.json());
+  const resp = await fetch(`${host}api/data-dragon/${latest}/items`).then(r => r.json());
+
+  return {
+    props: {
+      version: latest,
+      itemList: resp.data,
+    }
+  }
+}
+
+function Home({ version, itemList = [] }) {
+  const [latestVer, setLatestVer] = useState(version);
+  const [items, setItems] = useState(itemList);
   const [filter, setFilter] = useState(``);
   const itemsRef = useRef([]);
 
   useEffect(() => {
-    fetch(`/api/data-dragon/versions`).then(r => r.json())
-      .then(({ latest }) => {
-        setLatestVer(latest);
-
-        fetch(`/api/data-dragon/${latest}/items`).then(r => r.json())
-          .then(({ data }) => {
-            setItems(data);
-            itemsRef.current = data;
-            console.log(`total ${data.length} items`)
-          })
-      })
-  }, [])
+    itemsRef.current = itemList;
+  }, [itemList])
 
   useEffect(() => {
     if (!filter) {
@@ -52,30 +55,32 @@ export default function Home() {
             <span className={`text-gray-700 mx-2 underline decoration-4 decoration-pink-500`}>{latestVer}</span>
           </p>
 
-          <div>
-            <label htmlFor="search">Search Items</label>
-            <input
-              autoComplete={`off`}
-              className={` mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
-              name="search"
-              type="text"
-              value={filter}
-              onChange={ev => setFilter(ev.target.value)}
-            />
-          </div>
+          <input
+            autoComplete={`off`}
+            className={` mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
+            name="search"
+            type="search"
+            placeholder={`Search...`}
+            value={filter}
+            onChange={ev => setFilter(ev.target.value)}
+          />
         </div>
 
-        <div className={cn(s.list, `flex flex-wrap basis-1 my-4`)}>
+        <div className={cn(s.list, `grid justify-between`)}>
           {items.map(i =>
-            <Image
+            <div
               key={i.id}
               data-itemid={i.id}
-              title={i.name}
-              width={48}
-              height={48}
-              alt={i.name}
-              src={`https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${i.id}.png`}
-            />
+              className={`p-1 h-16 w-16 flex items-center justify-center`}
+            >
+              <Image
+                title={i.name}
+                width={48}
+                height={48}
+                alt={i.name}
+                src={`https://ddragon.leagueoflegends.com/cdn/12.15.1/img/item/${i.id}.png`}
+              />
+            </div>
           )}
         </div>
 
@@ -87,3 +92,5 @@ export default function Home() {
     </>
   )
 }
+
+export default Home;
