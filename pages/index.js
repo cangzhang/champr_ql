@@ -90,8 +90,14 @@ function Home({ version, itemList = [] }) {
 
       </main>
 
-      <footer className={s.footer}>
-        Made with 💙 by alcheung
+      <footer className={cn(s.footer, 'bg-gray-600 text-slate-300')}>
+        Made with 💙 by
+        <a
+          className={`font-mono bg-slate-500 rounded-lg mx-1 px-1 text-slate-50 w-auto grow-0 hover:underline`}
+          href={`https://github.com/cangzhang`}
+        >
+          @alcheung
+        </a>
       </footer>
     </>
   )
