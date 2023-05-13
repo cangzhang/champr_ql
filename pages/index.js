@@ -1,12 +1,12 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from "react";
-import cn from 'classnames';
+import cn from 'clsx';
 
 import s from '../styles/Home.module.css'
 
 export async function getServerSideProps(context) {
-  let host = context.req.headers[`referer`];
+  let host = context.req.headers[`referer`] ?? 'http://localhost:3000/';
   if (process.env.NODE_ENV === `production`) {
     host = process.env.HOST;
   }
