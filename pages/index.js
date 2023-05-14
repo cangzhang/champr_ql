@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from "react";
 import cn from 'clsx';
+import { Analytics } from '@vercel/analytics/react';
 
 import s from '../styles/Home.module.css'
 
@@ -99,6 +100,8 @@ function Home({ version, itemList = [] }) {
           @alcheung
         </a>
       </footer>
+
+      <Analytics />
     </>
   )
 }
