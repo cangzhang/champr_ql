@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
+import { NextResponse } from 'next/server';
 
-export default async function handler(req, res) {
+export async function GET() {
   let list = await fetch('https://ddragon.leagueoflegends.com/api/versions.json').then(r => r.json());
-  res.status(200).json({ latest: list[0] });
+  return NextResponse.status(200).json({ latest: list[0] });
 }

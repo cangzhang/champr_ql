@@ -1,21 +1,32 @@
 import fetch from 'node-fetch';
-import {CDN_URL, REGISTRY_URL} from "../../config";
+import { NextResponse } from 'next/server';
 
-export default async function handler(req, res) {
+import { CDN_URL, REGISTRY_URL } from "../../../config";
+
+export async function GET(req) {
   try {
-    const { source, champion } = req.query;
+    const { searchParams: search } = new URL(req.url);
+    const source = search.get("source");
+    const champion = search.get("champion");
 
     if (!source || !champion) {
-      return res.status(400).json({ error: true, message: "Invalid request, source and champion are required." });
+      const body = JSON.stringify({ error: true, message: "Invalid request, source and champion are required." });
+      return new Response(body, {
+        status: 400,
+        headers: {
+          'content-type': 'application/json',
+        }
+      });
     }
 
     const version = await getLatestVersion(source);
     const data = await getFile(source, version, champion);
-    res.status(200).json(data);
+    return NextResponse.json(data);
   } catch (err) {
-    res.status(500).text(err);
+    return new Response(err, {
+      status: 500,
+    });
   }
-
 }
 
 async function getLatestVersion(source) {

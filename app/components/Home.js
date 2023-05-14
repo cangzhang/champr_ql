@@ -1,56 +1,31 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { useEffect, useRef, useState } from "react";
-import cn from 'clsx';
-import { Analytics } from '@vercel/analytics/react';
+'use client';
 
-import s from '../styles/Home.module.css'
+import { useEffect, useRef, useState } from 'react'
+import cn from "clsx";
+import Image from "next/image";
+import s from "./Home.module.css";
 
-export async function getServerSideProps(context) {
-  let host = context.req.headers[`referer`] ?? 'http://localhost:3000/';
-  if (process.env.NODE_ENV === `production`) {
-    host = process.env.HOST;
-  }
-
-  const { latest } = await fetch(`${host}api/data-dragon/versions`).then(r => r.json());
-  const resp = await fetch(`${host}api/data-dragon/${latest}/items`).then(r => r.json());
-
-  return {
-    props: {
-      version: latest,
-      itemList: resp.data,
-    }
-  }
-}
-
-function Home({ version, itemList = [] }) {
-  const [latestVer, setLatestVer] = useState(version);
-  const [items, setItems] = useState(itemList);
+export default function IndexPage({ itemList = [], latestVer = "" }) {
   const [filter, setFilter] = useState(``);
+  const [items, setItems] = useState([]);
   const itemsRef = useRef([]);
 
   useEffect(() => {
     itemsRef.current = itemList;
-  }, [itemList])
+  }, [itemList]);
 
   useEffect(() => {
     if (!filter) {
       setItems(itemsRef.current);
-      return
+      return;
     }
 
-    let list = itemsRef.current.filter(i => i.id.includes(filter))
-    setItems(list)
-  }, [filter, items])
+    let list = itemsRef.current.filter(i => i.id.includes(filter));
+    setItems(list);
+  }, [filter]);
 
   return (
     <>
-      <Head>
-        <title>ChampR - Yet Another League of Legends Helper</title>
-        <meta name="description" content="ChampR - Yet Another League of Legends Helper"/>
-        <link rel="icon" href="/favicon.ico"/>
-      </Head>
-
       <main className={cn(s.main, `container mx-auto p-4 flex flex-col`)}>
         <h1 className={`text-6xl font-bold text-blue-600`}>Welcome!</h1>
 
@@ -101,9 +76,6 @@ function Home({ version, itemList = [] }) {
         </a>
       </footer>
 
-      <Analytics />
     </>
   )
 }
-
-export default Home;
