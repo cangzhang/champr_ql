@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import {REGISTRY_URL} from "../config";
+import {REGISTRY_URL} from "../../config";
 
 export default async function handler(req, res) {
   try {
