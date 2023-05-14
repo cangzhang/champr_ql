@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import { NextResponse } from 'next/server';
 
 export default async function GET(req) {
   const { searchParams } = new URL(request.url);
@@ -12,5 +13,5 @@ export default async function GET(req) {
         ...val
       }
     }).filter(i => i.inStore !== false)
-  return NextResponse.status(200).json({ data, version })
+  return NextResponse.json({ data, version })
 }
