@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { REGISTRY_URL } from "../../../config";
+import { REGISTRY_URL } from '@/config';
 
 export async function GET() {
   try {

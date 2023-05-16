@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { NextResponse } from 'next/server';
 
-import { CDN_URL, REGISTRY_URL } from "../../../config";
+import { CDN_URL, REGISTRY_URL } from '@/config';
 
 export async function GET(req) {
   try {
