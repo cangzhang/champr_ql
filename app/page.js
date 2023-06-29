@@ -20,12 +20,10 @@ export async function getVersionAndItemList(context) {
 }
 
 export default async function IndexPage() {
-  const { version, itemList } = await getVersionAndItemList();
-
+  // const { version, itemList } = await getVersionAndItemList();
 
   return (
     <>
-      <Home latestVer={version} itemList={itemList} />
       <Analytics/>
     </>
   )
