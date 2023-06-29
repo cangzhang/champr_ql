@@ -1,6 +1,6 @@
 {
   "functions": {
-    "app/api/*.js": {
+    "app/**/*": {
       "memory": 256
     }
   }
